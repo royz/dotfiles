@@ -92,7 +92,7 @@ function watch ($file) {
   $ext = [System.IO.Path]::GetExtension($file)
 
   if ($ext -eq ".py") {
-    uvx --from watchdog watchmedo shell-command --patterns="*.py" --recursive --command="uv run $file" .
+    uvx --from watchdog watchmedo shell-command --patterns="*.py" --recursive --drop --command="uv run $file" .
   } elseif ($ext -eq ".ts") {
     npx tsx watch $file
   } else {
