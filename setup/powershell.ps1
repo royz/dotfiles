@@ -1,6 +1,6 @@
-# Bootstrap: when piped via "irm ... | iex", $PSScriptRoot is empty.
+# Bootstrap: when piped via "irm ... | iex", MyCommand.Path is empty.
 # Clone or update the repo, then re-run the real script from disk.
-if (-not $PSScriptRoot) {
+if (-not $MyInvocation.MyCommand.Path) {
     $repoUrl = "https://github.com/royz/dotfiles.git"
     $repoDir = Join-Path $HOME "dotfiles"
 
@@ -14,7 +14,8 @@ if (-not $PSScriptRoot) {
 
     & (Join-Path $repoDir "setup\powershell.ps1")
 } else {
-    $dotfilesProfile = Join-Path $PSScriptRoot "..\PowerShell_profile.ps1"
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $dotfilesProfile = Join-Path $scriptDir "..\PowerShell_profile.ps1"
     $dotfilesProfile = [System.IO.Path]::GetFullPath($dotfilesProfile)
 
     $profilePaths = @(
