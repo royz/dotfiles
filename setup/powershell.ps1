@@ -11,5 +11,6 @@ foreach ($profilePath in $profilePaths) {
     if (-not (Test-Path $dir)) {
         New-Item -ItemType Directory -Path $dir -Force | Out-Null
     }
-    Set-Content -Path $profilePath -Value ". `"$dotfilesProfile`"" -Encoding UTF8
+    $content = "`$PROFILE = `"$dotfilesProfile`"`n. `$PROFILE"
+    Set-Content -Path $profilePath -Value $content -Encoding UTF8
 }
