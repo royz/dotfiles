@@ -11,6 +11,10 @@ Set-PSReadLineOption -EditMode Windows
 
 # print github access token from env var
 function gh-pat {
+    if (-not $env:GITHUB_PAT) {
+        Write-Error "GITHUB_PAT environment variable is not set or empty"
+        return
+    }
     echo $env:GITHUB_PAT
 }
 
@@ -100,11 +104,9 @@ function watch ($file) {
   }
 }
 
-function crm {
-  Set-Location C:\Users\Rajorshi\projects\perforia\perforia-crm
-  code .
-  Start-Process "http://localhost:3000"
-  pnpm run dev
+function qwen {
+    $env:OLLAMA_GPU_LAYERS=999
+    ollama run qwen3.6:35b
 }
 
 function sudo-ps($scriptPath) {
@@ -174,18 +176,9 @@ function install-mantine {
   }
 }
 
-function winutil-update {
-  cd C:\Users\Rajorshi\projects\personal\winutil
-  git pull
-  . .\Compile.ps1
-}
 
-function winutil {
-  if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-      Start-Process pwsh -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"C:\Users\Rajorshi\projects\personal\winutil\windev.ps1`"" -Verb RunAs
-  } else {
-      . C:\Users\Rajorshi\projects\personal\winutil\windev.ps1
-  }
+function pixel9 {
+  & "$env:LOCALAPPDATA\Android\Sdk\emulator\emulator.exe" -avd Pixel_9_Pro @args
 }
 
 # Install dependencies based on the package manager used in the current project
@@ -461,3 +454,4 @@ Set-Alias -Name pm -value pnpm
 Set-Alias -Name grep -Value Select-String
 Set-Alias -Name rc -Value rclone
 Set-Alias -Name ag -Value antigravity
+Set-Alias -Name ci -Value code-insiders
